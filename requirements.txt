@@ -1,2 +1,5 @@
 Django
 psycopg2
+python-dotenv
+apscheduler
+pytz
