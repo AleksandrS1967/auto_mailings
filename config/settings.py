@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "mailings",
+    "users",
+    "blog"
 ]
 
 MIDDLEWARE = [
@@ -142,3 +145,12 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
 AUTO_MAILING = False
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/users/'
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

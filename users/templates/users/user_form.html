@@ -1,0 +1,36 @@
+{% extends 'mailings/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
+                    <h2 class="display-4 fw-normal">{{ user.email|title }}</h2>
+                    <img src="{{ user.avatar | media_filter }}" class="col-2"
+                         style="height: 300px; width: max-content">
+                </div>
+                <h2 class="mb-3">Профиль</h2>
+                <ul class="col-10 mx-auto">
+                    <li><b>Количество рассылок всего</b> - {{ mailings_all }}</li>
+                    <li><b>Количество активных рассылок</b> - {{ mailings_active }}</li>
+                    <li><b>Количество уникальных клиентов для рассылок</b> - {{ uni_clients_email }}</li>
+                    <li>
+                        <p class="mb-1"><b>Три случайные статьи из блога:</b></p>
+                        {% for item in list_blog %}
+                        <p class="mt-1 mb-0">- {{ item }}</p>
+                        {% endfor %}
+                    </li>
+                </ul>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success">
+                        Сохранить
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

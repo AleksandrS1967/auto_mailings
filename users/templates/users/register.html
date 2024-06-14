@@ -1,0 +1,22 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mb-3">Регистрация</h2>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success">
+                        Зарегистрироваться
+                    </button>
+                    <p class="mt-3">После регистрации на вашу почту будет отправлено сообщение со ссылкой - перейдите по ней что бы
+                        подтвердить подлинность почты...</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

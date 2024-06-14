@@ -1,4 +1,4 @@
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
@@ -7,7 +7,7 @@ from mailings.forms import MailingUpdateForm, MailingMessageUpdateForm, Recipien
 
 
 # Create your views here.
-class MailingListView(ListView):
+class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
 
     def get_context_data(self, **kwargs):
@@ -17,7 +17,7 @@ class MailingListView(ListView):
         return context
 
 
-class MailingMessageListView(ListView):
+class MailingMessageListView(LoginRequiredMixin, ListView):
     model = MailingMessage
 
     def get_context_data(self, **kwargs):
@@ -27,7 +27,7 @@ class MailingMessageListView(ListView):
         return context
 
 
-class RecipientClientListView(ListView):
+class RecipientClientListView(LoginRequiredMixin, ListView):
     model = RecipientClient
 
     def get_context_data(self, **kwargs):
@@ -37,7 +37,7 @@ class RecipientClientListView(ListView):
         return context
 
 
-class MailingHistoryListView(ListView):
+class MailingHistoryListView(LoginRequiredMixin, ListView):
     model = HistoryMailing
 
     def get_context_data(self, **kwargs):

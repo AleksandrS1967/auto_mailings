@@ -1,0 +1,16 @@
+{% extends 'mailings/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
+    <h2 class="display-4 fw-normal">{{ object.name }} / {{ object.slug }}</h2>
+    <img src="{{ object.image | media_filter }}" class="col-2" style="height: 300px; width: max-content">
+</div>
+<ul class="col-10 mx-auto">
+    <li>Содержание: {{ object.description | description_filter }}</li>
+    <li>Просмотры: {{ object.counter }}</li>
+</ul>
+<div class="col-10 mx-auto">
+    <a type="button" class="btn btn-sm btn-outline-secondary"
+       href="{% url 'blog:list' %}">Назад</a>
+</div>
+{% endblock %}

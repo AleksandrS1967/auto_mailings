@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 NULLABLE = {'blank': True, 'null': True}
 PERIODICITY_DATA = {
     'раз в день': 'день',
@@ -16,8 +18,10 @@ STATUS_DATA = {
 class MailingMessage(models.Model):
     theme = models.CharField(max_length=100, verbose_name='тема письма')
     body = models.CharField(max_length=150, verbose_name='тело письма')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, help_text='укажите владельца', verbose_name='владелец',
+                              **NULLABLE)
 
-    def __str__(self): # Строковое отображение объекта
+    def __str__(self):  # Строковое отображение объекта
         return f'{self.theme}'
 
     class Meta:
@@ -29,6 +33,8 @@ class RecipientClient(models.Model):
     email = models.EmailField(unique=True, verbose_name='email')
     full_name = models.CharField(max_length=150, verbose_name='ф.и.о')
     comment = models.TextField(verbose_name='комментарий', **NULLABLE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, help_text='укажите владельца', verbose_name='владелец',
+                              **NULLABLE)
 
     def __str__(self):
         return f'{self.full_name} - {self.email}'
@@ -45,8 +51,10 @@ class Mailing(models.Model):
     status = models.CharField(choices=STATUS_DATA, default='создана', verbose_name='статус', **NULLABLE)
     message = models.ForeignKey(MailingMessage, on_delete=models.SET_NULL, verbose_name='сообщение', **NULLABLE)
     clients = models.ManyToManyField(RecipientClient, verbose_name='клиенты')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, help_text='укажите владельца', verbose_name='владелец',
+                              **NULLABLE)
 
-    def __str__(self): # Строковое отображение объекта
+    def __str__(self):  # Строковое отображение объекта
         return f'рассылка стартовала {self.first_date}'
 
     class Meta:

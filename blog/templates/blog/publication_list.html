@@ -1,0 +1,37 @@
+{% extends 'mailings/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
+    <a class="btn btn-outline-primary" href="{% url 'blog:create' %}">Добовить публикацию</a>
+</div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 col-10 mx-auto">
+    {% for object in object_list %}
+    <div class="col">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="card-text">{{ object.name | title }}</p>
+                <ul class="">
+                    <li>Просмотры: {{ object.counter }}</li>
+                </ul>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'blog:view' object.pk %}">View</a>
+                        {% if user.is_authenticated %}
+                        {% if perms.blog.change_publication %}
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'blog:edit' object.pk %}">Edit</a>
+                        {% endif %}
+                        {% if perms.blog.delete_publication %}
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'blog:delete' object.pk %}">Delete</a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
