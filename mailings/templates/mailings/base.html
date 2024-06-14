@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <title>{{ title_name|title }}</title>
+</head>
+<body>
+<header>
+    {% include 'mailings/includes/menu.html' %}
+    {% block content %}
+    {% endblock %}
+</header>
+<footer class="text-body-secondary py-5 col-10 mx-auto">
+    {% include 'mailings/includes/footer.html' %}
+</footer>
+<script src="{% static 'js/bootstrap.js' %}">
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
+    <h2 class="display-4 fw-normal">Тема - {{ mailing.message.theme|title }}</h2>
+</div>
+<ul class="col-10 mx-auto">
+    <li><b>Статус</b> - {{ mailing.status|title }}</li>
+    <li><b>Периодичность</b> - {{ mailing.periodicity }}</li>
+    <li><b>Дата старта</b> - {{ mailing.first_date }}</li>
+    {% if mailing.status == 'завершена' %}
+    <li><b>Дней до следующей отправки</b> - Рассылка завершена </li>
+    {% else %}
+    <li><b>Дней до следующей отправки</b> - {{ mailing.check_periodicity }}</li>
+    {% endif %}
+    <li>
+        <p class="mb-1"><b>Клиенты получатели:</b></p>
+        {% for client in mailing.clients.all %}
+        <p class="mt-1 mb-0">- {{ client.full_name }}</p>
+        {% endfor %}
+    </li>
+</ul>
+<div class="col-10 mx-auto">
+    <a type="button" title="Вернуться на главную" class="btn btn-sm btn-outline-secondary"
+       href="{% url 'mailings:mailings_list' %}">Назад</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary"
+       href="{% url 'mailings:mailing_update' mailing.pk %}">Редактировать</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:mailing_delete' mailing.pk %}">Удалить</a>
+</div>
+{% endblock %}

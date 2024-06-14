@@ -1,0 +1,12 @@
+<div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom col-10 mx-auto">
+    <a href="{% url 'mailings:mailings_list' %}" class="d-flex align-items-center text-dark text-decoration-none">
+        <span class="fs-4">Mailings</span>
+    </a>
+
+    <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'mailings:mailings_list' %}">Рассылки</a>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'mailings:message_list' %}">Сообщения</a>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'mailings:clients_list' %}">Клиенты</a>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'mailings:history_list' %}">История</a>
+    </nav>
+</div>

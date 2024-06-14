@@ -1,0 +1,16 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
+    <h2 class="display-4 fw-normal">Статус - {{ object.status }}</h2>
+</div>
+<ul class="col-10 mx-auto">
+    <li><b>Ответ почтового сервера</b> - {{ object.response }}</li>
+    <li><b>Дата последней попытки</b> - {{ object.last_date }}</li>
+</ul>
+<div class="col-10 mx-auto">
+    <a type="button" title="Вернуться на главную" class="btn btn-sm btn-outline-secondary"
+       href="{% url 'mailings:history_list' %}">Назад</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:history_delete' object.pk %}">Удалить</a>
+</div>
+{% endblock %}

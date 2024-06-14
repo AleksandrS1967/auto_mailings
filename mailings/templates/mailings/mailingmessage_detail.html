@@ -1,0 +1,17 @@
+{% extends 'mailings/base.html' %}
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
+    <h2 class="display-4 fw-normal">Тема - {{ object.theme|title }}</h2>
+</div>
+<ul class="col-10 mx-auto">
+    <li><b>Содержание</b> - {{ object.body|title }}</li>
+</ul>
+<div class="col-10 mx-auto">
+    <a type="button" title="Вернуться на главную" class="btn btn-sm btn-outline-secondary"
+       href="{% url 'mailings:message_list' %}">Назад</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary"
+       href="{% url 'mailings:message_update' object.pk %}">Редактировать</a>
+    <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:message_delete' object.pk %}">Удалить</a>
+</div>
+{% endblock %}

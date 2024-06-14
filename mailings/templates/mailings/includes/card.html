@@ -1,0 +1,24 @@
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3  col-10 mx-auto">
+    {% for mailing in mailings_list %}
+    <div class="col">
+        <div class="card shadow-sm" style="min-width: 304px;">
+            <div class="card-body">
+                <p class="card-text">Тема - {{ mailing.message.theme|title }}</p>
+                <p class="card-text">Статус - {{ mailing.status|title }}</p>
+                <p class="text-body-secondary">{{ mailing.periodicity }}</p>
+                <div class="">
+                    <div class="">
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:mailing_detail' mailing.pk %}">Подробнее</a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:mailing_update' mailing.pk %}">Редактировать</a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:mailing_delete' mailing.pk %}">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

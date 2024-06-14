@@ -1,0 +1,32 @@
+{% extends 'mailings/base.html' %}
+
+{% block content %}
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
+    <h1 class="display-4 fw-normal">{{ title_name|title }} Hello</h1>
+    <p class="fs-5 text-muted">Список клиентов</p>
+    <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:create_client' %}">Добавить клиента</a>
+</div>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3  col-10 mx-auto">
+    {% for client in clients %}
+    <div class="col">
+        <div class="card shadow-sm" style="min-width: 304px;">
+            <div class="card-body">
+                <p class="card-text">Мэйл - {{ client.email|title }}</p>
+                <p class="card-text">Имя - {{ client.full_name|title }}</p>
+                <div class="">
+                    <div class="">
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:clients_detail' client.pk %}">Подробнее</a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:clients_update' client.pk %}">Редактировать</a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary"
+                           href="{% url 'mailings:clients_delete' client.pk %}">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
