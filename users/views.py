@@ -1,7 +1,7 @@
 import secrets
 from random import randint
 import random
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from config.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 
 from users.forms import UserRegisterForm
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import CreateView, UpdateView, TemplateView
+from django.views.generic import CreateView, UpdateView, TemplateView, ListView
 from users.models import User
 from mailings.models import Mailing, RecipientClient
 from blog.models import Publication
@@ -92,3 +92,16 @@ def recovery_password(request):
         form = RecoverPasswordForm
         context = {"form": form}
         return render(request, "users/recovery_password_form.html", context)
+
+
+class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = User
+    template_name = 'users/user_list.html'
+    permission_required = ('users.view_users', )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        users = User.objects.all()
+        context['users_list'] = users
+        return context
+

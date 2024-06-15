@@ -24,3 +24,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'Пользователь'  # Настройка для наименования одного объекта
         verbose_name_plural = 'Пользователи'  # Настройка для наименования набора объектов
+
+        permissions = [
+            ("view_users", "View users")
+        ]

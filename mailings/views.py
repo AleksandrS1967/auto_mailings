@@ -1,9 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
 from mailings.models import Mailing, MailingMessage, RecipientClient, HistoryMailing
-from mailings.forms import MailingUpdateForm, MailingMessageUpdateForm, RecipientClientUpdateForm
+from mailings.forms import MailingUpdateForm, MailingMessageUpdateForm, RecipientClientUpdateForm, \
+    MailingUpdateModeratorForm
 
 
 # Create your views here.
@@ -13,7 +15,10 @@ class MailingListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
-        mailings = Mailing.objects.filter(owner=user)
+        if user.has_perm('mailings.can_view_mailings') or user.is_superuser:
+            mailings = Mailing.objects.all()
+        else:
+            mailings = Mailing.objects.filter(owner=user)
         context['mailings_list'] = mailings
         return context
 
@@ -24,7 +29,10 @@ class MailingMessageListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         user = self.request.user
-        messages = MailingMessage.objects.filter(owner=user)
+        if user.has_perm('mailings.can_view_mailings') or user.is_superuser:
+            messages = MailingMessage.objects.all()
+        else:
+            messages = MailingMessage.objects.filter(owner=user)
         context['messages'] = messages
         return context
 
@@ -57,6 +65,15 @@ class MailingUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('mailings:mailing_detail', args=[self.kwargs.get('pk')])
+
+    def get_form_class(self):
+        user = self.request.user
+        print(user.groups == 'moderator')
+        if user == self.object.owner:
+            return MailingUpdateForm
+        if user.has_perm('mailings.can_edit_mailings_status'):
+            return MailingUpdateModeratorForm
+        raise PermissionDenied
 
 
 class MailingMessageUpdateView(UpdateView):

@@ -21,6 +21,13 @@ class MailingUpdateForm(StyleFormMixin, forms.ModelForm):
         # exclude = ('name')
 
 
+class MailingUpdateModeratorForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Mailing
+        fields = ('status',)
+
+
+
 class MailingMessageUpdateForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MailingMessage

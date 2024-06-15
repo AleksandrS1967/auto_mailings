@@ -11,7 +11,9 @@
        href="{% url 'mailings:message_list' %}">Назад</a>
     <a type="button" class="btn btn-sm btn-outline-secondary"
        href="{% url 'mailings:message_update' object.pk %}">Редактировать</a>
+    {% if not perms.mailings.can_view_mailings or user.is_superuser %}
     <a type="button" class="btn btn-sm btn-outline-secondary"
                            href="{% url 'mailings:message_delete' object.pk %}">Удалить</a>
+    {% endif %}
 </div>
 {% endblock %}

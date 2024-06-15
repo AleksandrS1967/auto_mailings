@@ -61,6 +61,11 @@ class Mailing(models.Model):
         verbose_name = 'Рассылка'  # Настройка для наименования одного объекта
         verbose_name_plural = 'Рассылки'  # Настройка для наименования набора объектов
 
+        permissions = [
+            ('can_edit_mailings_status', 'Can edit Mailings status'),
+            ('can_view_mailings', 'Can view Mailings')
+        ]
+
 
 class HistoryMailing(models.Model):
     last_date = models.DateField(verbose_name='дата последней попытки')

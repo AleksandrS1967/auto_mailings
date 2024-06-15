@@ -13,8 +13,10 @@
                            href="{% url 'mailings:mailing_detail' mailing.pk %}">Подробнее</a>
                         <a type="button" class="btn btn-sm btn-outline-secondary"
                            href="{% url 'mailings:mailing_update' mailing.pk %}">Редактировать</a>
+                        {% if not perms.mailings.can_view_mailings or user.is_superuser %}
                         <a type="button" class="btn btn-sm btn-outline-secondary"
                            href="{% url 'mailings:mailing_delete' mailing.pk %}">Удалить</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

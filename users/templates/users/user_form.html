@@ -6,22 +6,23 @@
         <div class="card">
             <div class="card-body">
                 <div class="pricing-header p-3 pb-md-4 mx-auto text-center col-10">
-                    <h2 class="display-4 fw-normal">{{ user.email|title }}</h2>
+                    <h2 class="display-4 fw-normal">Главная страница</h2>
                     <img src="{{ user.avatar | media_filter }}" class="col-2"
                          style="height: 300px; width: max-content">
                 </div>
-                <h2 class="mb-3">Профиль</h2>
+                <h2 class="mb-3">Пользователь - {{ user.email|title }}</h2>
                 <ul class="col-10 mx-auto">
-                    <li><b>Количество рассылок всего</b> - {{ mailings_all }}</li>
-                    <li><b>Количество активных рассылок</b> - {{ mailings_active }}</li>
-                    <li><b>Количество уникальных клиентов для рассылок</b> - {{ uni_clients_email }}</li>
+                    <li>Количество рассылок всего - {{ mailings_all }}</li>
+                    <li>Количество активных рассылок - {{ mailings_active }}</li>
+                    <li>Количество уникальных клиентов для рассылок - {{ uni_clients_email }}</li>
                     <li>
-                        <p class="mb-1"><b>Три случайные статьи из блога:</b></p>
+                        <p class="mb-1">Три случайные статьи из блога:</p>
                         {% for item in list_blog %}
                         <p class="mt-1 mb-0">- {{ item }}</p>
                         {% endfor %}
                     </li>
                 </ul>
+                <h4>Изменить профиль</h4>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
