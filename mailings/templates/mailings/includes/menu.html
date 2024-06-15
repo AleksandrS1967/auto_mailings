@@ -9,7 +9,7 @@
         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'mailings:clients_list' %}">Клиенты</a>
         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'mailings:history_list' %}">История</a>
         <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'blog:list' %}">Блог</a>
-        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'users:profile' %}">Профиль</a>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="{% url 'users:profile' %}">Главная</a>
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'users:logout' %}">
             {% csrf_token %}
