@@ -5,3 +5,4 @@ apscheduler
 pytz
 Pillow
 pytils
+redis
