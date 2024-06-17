@@ -9,18 +9,22 @@ from config.settings import EMAIL_HOST_USER
 
 
 def sending_messages():
+    """
+    функция для запуска рассылок
+    """
     zone = pytz.timezone(settings.TIME_ZONE)
     current_datetime = dt.now(zone)
     from mailings.models import Mailing, HistoryMailing
-    mailings = Mailing.objects.filter(status='запущена')
-    print(f'\nКоличество рассылок для отправки: {mailings.count()}')
-    print(f'Сейчас - {current_datetime}')
+
+    mailings = Mailing.objects.filter(status="запущена")
+    print(f"\nКоличество рассылок для отправки: {mailings.count()}")
+    print(f"Сейчас - {current_datetime}")
     for mailing in mailings:
-        mailing.status = 'запущена'
+        mailing.status = "запущена"
         if mailing.check_periodicity == 0:
             clients = mailing.clients.all()
             client_emails = [client.email for client in clients]
-            print(f'Клиенты получатели - {client_emails}')
+            print(f"Клиенты получатели - {client_emails}")
             try:
                 response = send_mail(
                     mailing.message.theme,
@@ -29,20 +33,24 @@ def sending_messages():
                     client_emails,
                     fail_silently=False,
                 )
-                HistoryMailing.objects.create(last_date=current_datetime,
-                                              status=True,
-                                              response=response, )
+                HistoryMailing.objects.create(
+                    last_date=current_datetime,
+                    status=True,
+                    response=response,
+                )
             except smtplib.SMTPException as e:
-                mailing.status = 'завершена'
-                print(f'Непредвиденная ошибка{e}')
-                HistoryMailing.objects.create(last_date=current_datetime,
-                                              status=False,
-                                              response=str(e), )
-            if mailing.periodicity == 'раз в день':
+                mailing.status = "завершена"
+                print(f"Непредвиденная ошибка{e}")
+                HistoryMailing.objects.create(
+                    last_date=current_datetime,
+                    status=False,
+                    response=str(e),
+                )
+            if mailing.periodicity == "раз в день":
                 mailing.check_periodicity = 1
-            if mailing.periodicity == 'раз в неделю':
+            if mailing.periodicity == "раз в неделю":
                 mailing.check_periodicity = 7
-            if mailing.periodicity == 'раз в месяц':
+            if mailing.periodicity == "раз в месяц":
                 mailing.check_periodicity = 30
         else:
             mailing.check_periodicity = mailing.check_periodicity - 1
@@ -50,11 +58,13 @@ def sending_messages():
 
 
 def start_apscheduler():
-    print('Starting scheduler...')
+    """
+    запуск scheduler - планировщик
+    :return:
+    """
+    print("Starting scheduler...")
     scheduler = BackgroundScheduler()
     if not scheduler.running:
-        scheduler.add_job(sending_messages, 'interval', seconds=10)
+        scheduler.add_job(sending_messages, "interval", seconds=10)
         scheduler.start()
-        print('Scheduler запущен успешно')
-
-
+        print("Scheduler запущен успешно")

@@ -1,18 +1,23 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import (
+    CreateView,
+    ListView,
+    DetailView,
+    UpdateView,
+    DeleteView,
+)
 from pytils.translit import slugify
 from blog.forms import PublicationForm
 from blog.models import Publication
 from config.settings import EMAIL_HOST_USER
 
 
-# Create your views here.
 class PublicationCreateView(CreateView):
     model = Publication
     form_class = PublicationForm
-    success_url = reverse_lazy('blog:list')
+    success_url = reverse_lazy("blog:list")
 
     def form_valid(self, form):
         if form.is_valid():
@@ -23,7 +28,9 @@ class PublicationCreateView(CreateView):
         return super().form_valid(form)
 
 
-class PublicationListView(LoginRequiredMixin, ListView):
+class PublicationListView(
+    LoginRequiredMixin, ListView
+):  # LoginRequiredMixin отклоняет запросы неавторизованных пользователей
     model = Publication
 
     def get_queryset(self, *args, **kwargs):
@@ -41,19 +48,23 @@ class PublicationDetailView(DetailView):
         self.object.save()
         if self.object.counter >= 100:
             send_mail(
-                'Просмотры Блога',
-                f'Ура! - публикация <{self.object}> набрала 100 просмотров...',
+                "Просмотры Блога",
+                f"Ура! - публикация <{self.object}> набрала 100 просмотров...",
                 EMAIL_HOST_USER,
-                ['sanyastronger@rambler.ru', ],
+                [
+                    "sanyastronger@rambler.ru",
+                ],
             )
         return self.object
 
 
-class PublicationUpdateView(PermissionRequiredMixin, UpdateView):
+class PublicationUpdateView(
+    PermissionRequiredMixin, UpdateView
+):  # PermissionRequiredMixin даёт доступ к контроллеру если у него есть права
     model = Publication
     form_class = PublicationForm
-    permission_required = 'blog.change_publication'
-    success_url = reverse_lazy('blog:list')
+    permission_required = "blog.change_publication"
+    success_url = reverse_lazy("blog:list")
 
     def form_valid(self, form):
         if form.is_valid():
@@ -64,10 +75,10 @@ class PublicationUpdateView(PermissionRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('blog:view', args=[self.kwargs.get('pk')])
+        return reverse("blog:view", args=[self.kwargs.get("pk")])
 
 
 class PublicationDeleteView(PermissionRequiredMixin, DeleteView):
     model = Publication
-    success_url = reverse_lazy('blog:list')
-    permission_required = 'blog.delete_publication'
+    success_url = reverse_lazy("blog:list")
+    permission_required = "blog.delete_publication"

@@ -4,14 +4,17 @@ from users.models import User
 
 
 class Command(BaseCommand):
+    """
+    класс для создания супер юзера
+    """
     def handle(self, *args, **kwargs):
         user = User.objects.create(
-            email='admin@rambler.ru',
-            first_name='Admin',
-            last_name='Aleksandr',
+            email="admin@rambler.ru",
+            first_name="Admin",
+            last_name="Aleksandr",
             is_staff=True,
-            is_superuser=True
+            is_superuser=True,
         )
 
-        user.set_password('1234')
+        user.set_password("1234")
         user.save()

@@ -6,5 +6,4 @@ from mailings.forms import StyleFormMixin
 class PublicationForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Publication
-        fields = ('name', 'description', 'image', 'publication_activ', 'counter')
-
+        fields = ("name", "description", "image", "publication_activ", "counter")

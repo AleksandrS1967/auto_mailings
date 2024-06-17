@@ -6,3 +6,4 @@ pytz
 Pillow
 pytils
 redis
+flake8

@@ -9,7 +9,7 @@ from django.urls import reverse_lazy, reverse
 
 from users.forms import UserRegisterForm
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import CreateView, UpdateView, TemplateView, ListView
+from django.views.generic import CreateView, UpdateView, ListView
 from users.models import User
 from mailings.models import Mailing, RecipientClient
 from blog.models import Publication
@@ -18,11 +18,12 @@ from users.forms import UserProfileForm, RecoverPasswordForm
 
 # Create your views here.
 
+
 class RegisterView(CreateView):
     model = User
     form_class = UserRegisterForm
-    template_name = 'users/register.html'
-    success_url = reverse_lazy('users:login')
+    template_name = "users/register.html"
+    success_url = reverse_lazy("users:login")
 
     def form_valid(self, form):
         user = form.save()
@@ -32,10 +33,10 @@ class RegisterView(CreateView):
         user.token = token
         user.save()
         host = self.request.get_host()
-        url = f'http://{host}/users/email_confirm/{token}/'
+        url = f"http://{host}/users/email_confirm/{token}/"
         send_mail(
-            'Подтверждение почты',
-            f'Перейдите по ссылке для подтверждения почты {url}',
+            "Подтверждение почты",
+            f"Перейдите по ссылке для подтверждения почты {url}",
             EMAIL_HOST_USER,
             [user.email],
         )
@@ -46,13 +47,13 @@ def email_verification(request, token):
     user = get_object_or_404(User, token=token)
     user.is_active = True
     user.save()
-    return redirect(reverse('users:login'))
+    return redirect(reverse("users:login"))
 
 
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
-    success_url = reverse_lazy('users:profile')
+    success_url = reverse_lazy("users:profile")
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -61,16 +62,16 @@ class ProfileView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data()
         user = self.request.user
         mailings_all = Mailing.objects.filter(owner=user)
-        mailings_active = Mailing.objects.filter(owner=user).filter(status='запущена')
+        mailings_active = Mailing.objects.filter(owner=user).filter(status="запущена")
         clients = RecipientClient.objects.filter(owner=user)
         clients_email = [client.email for client in clients]
         uni_clients_email = set(clients_email)
         list_blog = list(Publication.objects.all())
         random.shuffle(list_blog)
-        context['mailings_all'] = len(mailings_all)
-        context['mailings_active'] = len(mailings_active)
-        context['uni_clients_email'] = len(uni_clients_email)
-        context['list_blog'] = list_blog[:3]
+        context["mailings_all"] = len(mailings_all)
+        context["mailings_active"] = len(mailings_active)
+        context["uni_clients_email"] = len(uni_clients_email)
+        context["list_blog"] = list_blog[:3]
         return context
 
 
@@ -83,7 +84,7 @@ def recovery_password(request):
             "Восстановление доступа",
             f"Ваш новый пароль : {new_password}",
             EMAIL_HOST_USER,
-            [user.email]
+            [user.email],
         )
         user.set_password(new_password)
         user.save()
@@ -96,12 +97,11 @@ def recovery_password(request):
 
 class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = User
-    template_name = 'users/user_list.html'
-    permission_required = ('users.view_users', )
+    template_name = "users/user_list.html"
+    permission_required = ("users.view_users",)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         users = User.objects.all()
-        context['users_list'] = users
+        context["users_list"] = users
         return context
-
